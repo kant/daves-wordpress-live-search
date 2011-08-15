@@ -24,6 +24,8 @@ TRANSLATORS WANTED: Since v2.3, Dave's WordPress Live Search supports multiple l
 
 NOTE: Dave's WordPress Live Search requires PHP 5.0 or higher.
 
+Interested in helping with this plugin's development? The official "trunk" is always in WordPress's SVN repository, but I keep the latest code at [GitHub](https://github.com/daveross/daves-wordpress-live-search) if you want to branch send a pull request.
+
 == Installation ==
 
 1. Upload the `daves-wordpress-live-search` directory to your site's `/wp-content/plugins/` directory
