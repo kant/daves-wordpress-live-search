@@ -62,12 +62,20 @@ class DavesWordPressLiveSearchResults {
 			}
 		}
 	
-        $wpQueryResults->query(array(
+        $wpQueryParams = array(
           's' => $_GET['s'],
           'showposts' => $maxResults,
           'post_type' => 'any',
           'post_status' => 'publish',
-        ));
+        );
+
+        // WPML compatibility
+        // see http://wpml.org/documentation/support/creating-multilingual-wordpress-themes/search-form/
+        if(isset($_GET['lang'])) {
+          $wpQueryParams['lang'] = $_GET['lang'];
+        }
+
+        $wpQueryResults->query($wpQueryParams);
         
         $this->searchTerms = $wpQueryResults->query_vars['s'];
         
