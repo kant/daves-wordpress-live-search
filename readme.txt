@@ -58,6 +58,10 @@ Features I want to implement in future releases:
 
 == Changelog ==
 
+= 2.4 =
+* 2011-??-?? Dave Ross <dave@csixty4.com>
+* WPML compatibilty (uses the "lang" parameter from the search box)
+
 = 2.3 =
 * 2011-08-03 Dave Ross <dave@csixty4.com>
 * Added a hook to keep Relevanssi integration out of the main code
