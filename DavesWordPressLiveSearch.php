@@ -32,18 +32,6 @@ class DavesWordPressLiveSearch {
             wp_enqueue_script('daves-wordpress-live-search', plugin_dir_url(__FILE__).'js/daves-wordpress-live-search.js', 'jquery');
             self::inlineSettings();
         }
-
-        // Repair settings in the absence of WP E-Commerce
-        // In version 1.15 I used a hidden field on the admin
-        // screen to default the source if WP E-Commerce isn't
-        // wasn't installed. But I set it to 1, which meant to
-        // search WP E-Commerce. I have no explanation except
-        // maybe I was too tired.
-        if (!defined('WPSC_VERSION')) {
-            if (0 != intval(get_option('daves-wordpress-live-search_source'))) {
-                update_option('daves-wordpress-live-search_source', 0);
-            }
-        }
         
         load_plugin_textdomain('dwls', false, dirname( plugin_basename( __FILE__ )) . '/languages/');
     }
