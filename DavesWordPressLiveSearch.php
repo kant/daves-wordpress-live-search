@@ -29,9 +29,8 @@ class DavesWordPressLiveSearch {
         if (self::isSearchablePage()) {
             wp_enqueue_script('jquery');
             
-            // Dynamically include the generated static
-            // Javascript file if present.
             wp_enqueue_script('daves-wordpress-live-search', plugin_dir_url(__FILE__).'js/daves-wordpress-live-search.js', 'jquery');
+            self::inlineSettings();
         }
 
         // Repair settings in the absence of WP E-Commerce
@@ -82,8 +81,6 @@ class DavesWordPressLiveSearch {
                     echo('<link rel="stylesheet" href="' . $style . '" type="text/css" media="screen" />');
                 }
             }
-
-            echo self::inlineSettings();
         }
     }
 
@@ -97,58 +94,35 @@ class DavesWordPressLiveSearch {
         $minCharsToSearch = intval(get_option('daves-wordpress-live-search_minchars'));
         $xOffset = intval(get_option('daves-wordpress-live-search_xoffset'));
 
-        if (/* defined('WPS_VERSION') && */ isset($wps_subdomains)) {
-            // WP Subdomains is enabled
-            // See if we're on a subdomain
-            $subdomain = $wps_subdomains->getThisSubdomain();
-        } else {
-            $subdomain = FALSE;
-        }
-
-        if ($subdomain) {
-
-            $blogURL = $subdomain->getSubdomainLink();
-
-            // Remove trailing slash
-            $blogURL = rtrim($blogURL, "/");
-
-            if (80 != $_SERVER['SERVER_PORT']) {
-                $blogURL .= ":" . $_SERVER['SERVER_PORT'];
-            }
-        } else {
-            // Normal
-            $blogURL = get_bloginfo('url');
-        }
-
         $indicatorURL = plugin_dir_url(__FILE__).'indicator.gif';
         $indicatorWidth = getimagesize(dirname(__FILE__) . "/indicator.gif");
         $indicatorWidth = $indicatorWidth[0];
 
-		// Translations
-		$moreResultsText = __( 'View more results', 'dwls' );
-		$outdatedJQueryText = __( "Dave's WordPress Live Search requires jQuery 1.2.6 or higher. WordPress ships with current jQuery versions. But if you are seeing this message, it's likely that another plugin is including an earlier version.", 'dwls' );
-		
-        $scriptMarkup = <<<SM
+        // Translations
+        $moreResultsText = __( 'View more results', 'dwls' );
+        $outdatedJQueryText = __( "Dave's WordPress Live Search requires jQuery 1.2.6 or higher. WordPress ships with current jQuery versions. But if you are seeing this message, it's likely that another plugin is including an earlier version.", 'dwls' );
 
-	    <script type="text/javascript">
-	    DavesWordPressLiveSearchConfig = {
-            resultsDirection : '{$resultsDirection}',
-            showThumbs : ($showThumbs == 1),
-            showExcerpt : ($showExcerpt == 1),
-            showMoreResultsLink : ($showMoreResultsLink == 1),
-            minCharsToSearch : {$minCharsToSearch},        
-            xOffset : {$xOffset},
-        
-            blogURL : '{$blogURL}',
-            indicatorURL : '{$indicatorURL}',
-            indicatorWidth : {$indicatorWidth},
+        // Neat trick: use wp_localize_script to generate the config object
+        // "This way, you won’t have to use PHP to print out JavaScript code,
+        // which is both ugly and non-cacheable."
+        // @see http://www.garyc40.com/2010/03/5-tips-for-using-ajax-in-wordpress/#js-global
+        wp_localize_script( 'daves-wordpress-live-search', 'DavesWordPressLiveSearchConfig', array(
+            'resultsDirection' => $resultsDirection,
+            'showThumbs' => ($showThumbs == 1) ? 'true' : 'false',
+            'showExcerpt' => ($showExcerpt == 1) ? 'true' : 'false',
+            'showMoreResultsLink' => ($showMoreResultsLink == 1) ? 'true' : 'false',
+            'minCharsToSearch' => $minCharsToSearch,        
+            'xOffset' => $xOffset,
+
+            'blogURL' => get_bloginfo('url'),
+            'ajaxURL' => admin_url('admin-ajax.php'),
+            'indicatorURL' => $indicatorURL,
+            'indicatorWidth' => $indicatorWidth,
             
-            viewMoreText : "{$moreResultsText}",
-            outdatedJQuery : "{$outdatedJQueryText}"
-	    };
-        </script>      	
-SM;
-        return $scriptMarkup;
+            'viewMoreText' => $moreResultsText,
+            'outdatedJQuery' => $outdatedJQueryText,
+            ));
+            
     }
 
     ///////////////
