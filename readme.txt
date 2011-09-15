@@ -4,7 +4,7 @@ Donate link: http://catguardians.org
 Tags: search, AJAX, live search
 Requires at least: 2.9
 Tested up to: 3.2.1
-Stable tag: 2.4
+Stable tag: 2.5
 
 Adds "live search" functionality to your WordPress site. Uses the built-in search and jQuery.
 
@@ -16,7 +16,7 @@ The [live search](http://ajaxpatterns.org/Live_Search) technique means that most
 
 This functionality requires Javascript, but the search box still works normally if Javascript is not available.
 
-This plugin is compatible with the [xLanguage](http://wordpress.org/extend/plugins/xlanguage/) plugin for internationalization (i18n) of search results. This plugin uses WordPress's built-in search which searches against all languages, but results are displayed in the current language.
+This plugin is compatible with the [xLanguage](http://wordpress.org/extend/plugins/xlanguage/) and [WPML](http://wpml.org/) plugins for internationalization (i18n) of search results.
 
 This plugin also integrates with the Relevanssi plugin for improved search results.
 
@@ -57,6 +57,12 @@ Features I want to implement in future releases:
 1. "No results found" message (optional)
 
 == Changelog ==
+
+=2.5=
+* 2011-09-14 Dave Ross <dave@csixty4.com>
+* WPML compatibility (thanks for the license!)
+* Pruned some outdated code
+* Better handling of Javascript config variables
 
 = 2.4 =
 * 2011-08-29 Dave Ross <dave@csixty4.com>
@@ -242,6 +248,9 @@ Features I want to implement in future releases:
 * Initial release
 
 == Upgrade Notice ==
+
+= 2.5 =
+This plugin is now compatible with the WPML internationalization plugin.
 
 = 2.0 =
 If you use a caching plugin, please clear your cache after upgrading. New: Performance & compatibility improvements. Works with WordPress 3.1! Debug feature for advanced users.
